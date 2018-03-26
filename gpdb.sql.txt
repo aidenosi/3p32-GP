@@ -90,7 +90,7 @@ CREATE TABLE HoldsPosition(
         ON UPDATE CASCADE,
     FOREIGN KEY(uname) REFERENCES PoliticalUnit (uname)
         ON DELETE NO ACTION
-        ON UPDATE NO ACTION
+        ON UPDATE NO ACTION,
     CHECK (start < end));
 
 CREATE TABLE Mentorship(
@@ -105,7 +105,7 @@ CREATE TABLE Mentorship(
         ON UPDATE NO ACTION,
     FOREIGN KEY (mname) REFERENCES Characters (cname)
         ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
+        ON UPDATE NO ACTION,
     CHECK (start < end));
 
 CREATE TABLE VUsedIn(
