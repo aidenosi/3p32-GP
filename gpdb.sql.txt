@@ -12,6 +12,19 @@ DROP TABLE VUsedIn;
 DROP TABLE UsesV;
 DROP TABLE UsesW;
 
+CREATE TABLE Planet(
+    pname CHAR(30),
+    x REAL,
+    y REAL,
+    z REAL,
+    PRIMARY KEY(pname),
+    UNIQUE(x, y, z));
+    
+CREATE TABLE PoliticalUnit(
+    uname char(30),
+    utype CHAR(30),
+    PRIMARY KEY(uname));
+
 CREATE TABLE Characters(
     cname CHAR(30),
     alias CHAR(30),
@@ -39,19 +52,6 @@ CREATE TABLE Droid(
     FOREIGN KEY (cname) REFERENCES Characters (cname)
         ON DELETE CASCADE
         ON UPDATE CASCADE);
-
-CREATE TABLE PoliticalUnit(
-    uname char(30),
-    utype CHAR(30),
-    PRIMARY KEY(uname));
-
-CREATE TABLE Planet(
-    pname CHAR(30),
-    x REAL,
-    y REAL,
-    z REAL,
-    PRIMARY KEY(pname),
-    UNIQUE(x, y, z));
 
 CREATE TABLE Battle(
     bname CHAR(30),
