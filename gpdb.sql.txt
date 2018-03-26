@@ -19,7 +19,7 @@ CREATE TABLE Characters(
     pname CHAR(30),
     PRIMARY KEY (cname),
     UNIQUE (alias),
-    FOREIGN KEY (pname) REFERENCES Planet
+    FOREIGN KEY (pname) REFERENCES Planet (pname)
         ON DELETE NO ACTION
         ON UPDATE CASCADE);
 
@@ -27,7 +27,7 @@ CREATE TABLE JediSith(
     cname CHAR(30),
     level ENUM('padawan', 'knight', 'master'),
     PRIMARY KEY (cname),
-    FOREIGN KEY (cname) REFERENCES Characters
+    FOREIGN KEY (cname) REFERENCES Characters (cname)
         ON DELETE CASCADE
         ON UPDATE CASCADE);
 
@@ -36,7 +36,7 @@ CREATE TABLE Droid(
     cname CHAR(30),
     dtype CHAR(30),
     PRIMARY KEY (cname),
-    FOREIGN KEY (cname) REFERENCES Characters
+    FOREIGN KEY (cname) REFERENCES Characters (cname)
         ON DELETE CASCADE
         ON UPDATE CASCADE);
 
@@ -59,10 +59,10 @@ CREATE TABLE Battle(
     pname CHAR(30) NOT NULL,
     uname CHAR(30) NOT NULL,
     PRIMARY KEY(bname),
-    FOREIGN KEY(pname) REFERENCES Planet
+    FOREIGN KEY(pname) REFERENCES Planet (pname)
         ON DELETE NO ACTION
         ON UPDATE CASCADE,
-    FOREIGN KEY (uname) REFERENCES PoliticalUnit
+    FOREIGN KEY (uname) REFERENCES PoliticalUnit (uname)
         ON DELETE NO ACTION
         ON UPDATE CASCADE);
 
@@ -85,10 +85,10 @@ CREATE TABLE HoldsPosition(
     from INTEGER,
     to INTEGER,
     PRIMARY KEY(cname, uname),
-    FOREIGN KEY(cname) REFERENCES Characters
+    FOREIGN KEY(cname) REFERENCES Characters (cname)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY(uname) REFERENCES PoliticalUnit
+    FOREIGN KEY(uname) REFERENCES PoliticalUnit (uname)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION
     CHECK (from < to));
@@ -99,11 +99,11 @@ CREATE TABLE Mentorship(
     from INTEGER,
     to INTEGER,
     uname CHAR(30),
-    PRIMARY KEY(aname, mname),
-    FOREIGN KEY(aname) REFERENCES Characters(cname)
+    PRIMARY KEY (aname, mname),
+    FOREIGN KEY (aname) REFERENCES Characters (cname)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
-    FOREIGN KEY(mname) REFERENCES Characters(cname)
+    FOREIGN KEY (mname) REFERENCES Characters (cname)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION)
     CHECK (from < to));
@@ -112,10 +112,10 @@ CREATE TABLE VUsedIn(
     vname CHAR(30),
     bname CHAR(30),
     PRIMARY KEY(vname, bname),
-    FOREIGN KEY(vname) REFERENCES Vehicle
+    FOREIGN KEY(vname) REFERENCES Vehicle (vname)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY(bname) REFERENCES Battle
+    FOREIGN KEY(bname) REFERENCES Battle (bname)
         ON DELETE CASCADE
         ON UPDATE CASCADE);
 
@@ -123,10 +123,10 @@ CREATE TABLE UsesV(
     cname CHAR(30),
     vname CHAR(30),
     PRIMARY KEY(cname, vname))
-    FOREIGN KEY(cname) REFERENCES Characters
+    FOREIGN KEY(cname) REFERENCES Characters (cname)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY(bname) REFERENCES Vehicle
+    FOREIGN KEY(bname) REFERENCES Vehicle (bname)
         ON DELETE CASCADE
         ON UPDATE CASCADE);
 
@@ -135,9 +135,9 @@ CREATE TABLE UsesW(
     wtype CHAR(30),
     wcolour CHAR(30),
     PRIMARY KEY(cname, wtype, wcolour),
-    FOREIGN KEY(cname) REFERENCES Characters
+    FOREIGN KEY(cname) REFERENCES Characters (cname)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY(wtype, wcolour) REFERENCES Weapon
+    FOREIGN KEY(wtype, wcolour) REFERENCES Weapon (wtype, wcolour)
         ON DELETE CASCADE
         ON UPDATE CASCADE);
