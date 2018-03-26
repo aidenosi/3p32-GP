@@ -1,0 +1,142 @@
+DROP TABLE Character;
+DROP TABLE JediSith;
+DROP TABLE Droid;
+DROP TABLE PoliticalUnit;
+DROP TABLE Planet;
+DROP TABLE Battle;
+DROP TABLE Vehicle;
+DROP TABLE Weapon;
+DROP TABLE HoldsPosition;
+DROP TABLE Mentorship;
+DROP TABLE VUsedIn;
+DROP TABLE UsesV;
+DROP TABLE UsesW;
+
+CREATE TABLE Character(
+    cname CHAR(30),
+    alias CHAR(30),
+    gender CHAR,
+    pname CHAR(30),
+    PRIMARY KEY (cname),
+    UNIQUE (alias),
+    FOREIGN KEY (pname) REFERENCES Planet
+        ON DELETE NO ACTION
+        ON UPDATE CASCADE);
+
+# Jedi/Sith levels - ENUM('padawan', 'knight', 'master')
+CREATE TABLE JediSith(
+    cname CHAR(30),
+    level CHAR(30),
+    PRIMARY KEY (cname),
+    FOREIGN KEY (cname) REFERENCES Character
+        ON DELETE CASCADE
+        ON UPDATE CASCADE);
+
+# Every droid of the same type has the same main skill
+CREATE TABLE Droid(
+    cname CHAR(30),
+    dtype CHAR(30),
+    PRIMARY KEY (cname),
+    FOREIGN KEY (cname) REFERENCES Character
+        ON DELETE CASCADE
+        ON UPDATE CASCADE);
+
+CREATE TABLE PoliticalUnit(
+    uname char(30),
+    utype CHAR(30),
+    PRIMARY KEY(uname));
+
+CREATE TABLE Planet(
+    pname CHAR(30),
+    x REAL,
+    y REAL,
+    z REAL,
+    PRIMARY KEY(pname),
+    UNIQUE(x, y, z));
+
+CREATE TABLE Battle(
+    bname CHAR(30),
+    byear INTEGER,
+    pname CHAR(30) NOT NULL,
+    uname CHAR(30) NOT NULL,
+    PRIMARY KEY(bname),
+    FOREIGN KEY(pname) REFERENCES Planet
+        ON DELETE NO ACTION
+        ON UPDATE CASCADE,
+    FOREIGN KEY (uname) REFERENCES PoliticalUnit
+        ON DELETE NO ACTION
+        ON UPDATE CASCADE);
+
+# All vehicles of the same type have the same hyperspace capability
+CREATE TABLE Vehicle(
+    vname CHAR(30),
+    vtype CHAR(30),
+    PRIMARY KEY(vname));
+
+# Only Jedi can use lightsabers
+CREATE TABLE Weapon(
+    wtype CHAR(30),
+    wcolour CHAR(30),
+    PRIMARY KEY(wtype, wcolour));
+
+# Only Jedi/Sith can hold a position on the Jedi Council
+# Starting year < final year
+CREATE TABLE HoldsPosition(
+    cname CHAR(30),
+    uname CHAR(30),
+    PRIMARY KEY(cname, uname),
+    FOREIGN KEY(cname) REFERENCES Character
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY(uname) REFERENCES PoliticalUnit
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION);
+
+# Starting year < final year
+CREATE TABLE Mentorship(
+    aname CHAR(30),
+    mname CHAR(30),
+    from INTEGER,
+    to INTEGER,
+    uname CHAR(30),
+    PRIMARY KEY(aname, mname),
+    FOREIGN KEY(aname) REFERENCES Character(cname)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
+    FOREIGN KEY(mname) REFERENCES Character(cname)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION));
+
+CREATE TABLE VUsedIn(
+    vname CHAR(30),
+    bname CHAR(30),
+    PRIMARY KEY(vname, bname),
+    FOREIGN KEY(vname) REFERENCES Vehicle
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY(bname) REFERENCES Battle
+        ON DELETE CASCADE
+        ON UPDATE CASCADE);
+
+CREATE TABLE UsesV(
+    cname CHAR(30),
+    vname CHAR(30),
+    PRIMARY KEY(cname, vname))
+    FOREIGN KEY(cname) REFERENCES Character
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY(bname) REFERENCES Vehicle
+        ON DELETE CASCADE
+        ON UPDATE CASCADE);
+
+CREATE TABLE UsesW(
+    cname CHAR(30),
+    wtype CHAR(30),
+    wcolour CHAR(30),
+    PRIMARY KEY(cname, wtype, wcolour),
+    FOREIGN KEY(cname) REFERENCES Character
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY(wtype, wcolour) REFERENCES Weapon
+        ON DELETE CASCADE
+        ON UPDATE CASCADE);
