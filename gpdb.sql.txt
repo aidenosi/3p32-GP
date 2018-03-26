@@ -1,16 +1,16 @@
-DROP TABLE Characters;
-DROP TABLE JediSith;
-DROP TABLE Droid;
-DROP TABLE PoliticalUnit;
-DROP TABLE Planet;
-DROP TABLE Battle;
-DROP TABLE Vehicle;
-DROP TABLE Weapon;
-DROP TABLE HoldsPosition;
-DROP TABLE Mentorship;
-DROP TABLE VUsedIn;
 DROP TABLE UsesV;
 DROP TABLE UsesW;
+DROP TABLE VUsedIn;
+DROP TABLE Mentorship;
+DROP TABLE HoldsPosition;
+DROP TABLE Battle;
+DROP TABLE Droid;
+DROP TABLE JediSith;
+DROP TABLE PoliticalUnit;
+DROP TABLE Vehicle;
+DROP TABLE Weapon;
+DROP TABLE Characters;
+DROP TABLE Planet;
 
 CREATE TABLE Planet(
     pname CHAR(30),
@@ -122,11 +122,11 @@ CREATE TABLE VUsedIn(
 CREATE TABLE UsesV(
     cname CHAR(30),
     vname CHAR(30),
-    PRIMARY KEY(cname, vname))
+    PRIMARY KEY(cname, vname),
     FOREIGN KEY(cname) REFERENCES Characters (cname)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY(bname) REFERENCES Vehicle (bname)
+    FOREIGN KEY(vname) REFERENCES Vehicle (vname)
         ON DELETE CASCADE
         ON UPDATE CASCADE);
 
