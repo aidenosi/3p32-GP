@@ -82,8 +82,8 @@ CREATE TABLE Weapon(
 CREATE TABLE HoldsPosition(
     cname CHAR(30),
     uname CHAR(30),
-    from INTEGER,
-    to INTEGER,
+    start INTEGER,
+    end INTEGER,
     PRIMARY KEY(cname, uname),
     FOREIGN KEY(cname) REFERENCES Characters (cname)
         ON DELETE CASCADE
@@ -91,13 +91,13 @@ CREATE TABLE HoldsPosition(
     FOREIGN KEY(uname) REFERENCES PoliticalUnit (uname)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION
-    CHECK (from < to));
+    CHECK (start < end));
 
 CREATE TABLE Mentorship(
     aname CHAR(30),
     mname CHAR(30),
-    from INTEGER,
-    to INTEGER,
+    start INTEGER,
+    end INTEGER,
     uname CHAR(30),
     PRIMARY KEY (aname, mname),
     FOREIGN KEY (aname) REFERENCES Characters (cname)
@@ -106,7 +106,7 @@ CREATE TABLE Mentorship(
     FOREIGN KEY (mname) REFERENCES Characters (cname)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION)
-    CHECK (from < to));
+    CHECK (start < end));
 
 CREATE TABLE VUsedIn(
     vname CHAR(30),
